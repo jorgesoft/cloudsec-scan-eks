@@ -17,5 +17,5 @@ module "eks" {
   source = "./modules/eks"
 
   vpc_id     = "vpc-00aa06d88f8431bd3"   # Replace with your VPC ID
-  subnet_ids = ["subnet-0310d0087d77a6f18", "subnet-01f44e983f97a5106"] # Replace with your subnet IDs
+  subnet_ids = ["subnet-0aef77930bb99cbbd", "subnet-00b288a7d2713bee0"] # Replace with your subnet IDs
 }
