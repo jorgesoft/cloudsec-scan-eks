@@ -13,7 +13,7 @@ variable "security_groups" {
   type        = list(string)
 }
 
-variable "execution_role_arn" {
-  description = "The name of the ECS service"
-  type        = string
-}
+# variable "execution_role_arn" {
+#   description = "The name of the ECS service"
+#   type        = string
+# }

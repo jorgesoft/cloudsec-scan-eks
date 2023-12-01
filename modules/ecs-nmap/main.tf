@@ -4,10 +4,11 @@ resource "aws_ecs_task_definition" "nmap" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
   memory                   = "512"
-  execution_role_arn       = var.execution_role_arn
+  execution_role_arn = aws_iam_role.nmap_task_role.arn
+  task_role_arn      = aws_iam_role.nmap_task_role.arn
   container_definitions = jsonencode([
     {
-      name  = "nmap_scanner"
+      name  = "nmap_scanner3"
       image = "gorje6/ecs-nmap:latest" # Replace with your Docker image
       essential = true
       logConfiguration = {
@@ -42,3 +43,48 @@ resource "aws_ecs_service" "nmap_service" {
 
 # Here, you can add more resources or configurations related to the ECS service if needed.
 # For example, auto-scaling configurations.
+
+resource "aws_iam_role" "nmap_task_role" {
+  name = "nmap_task_role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = "sts:AssumeRole",
+        Principal = {
+          Service = "ecs-tasks.amazonaws.com"
+        },
+      },
+    ],
+  })
+}
+
+resource "aws_iam_role_policy" "nmap_task_policy" {
+  name   = "nmap_task_policy"
+  role   = aws_iam_role.nmap_task_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:PutObject",
+          "s3:PutObjectAcl"
+        ],
+        Resource = "arn:aws:s3:::jorges-test/*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "logs:CreateLogGroup"
+        ],
+        Resource = "arn:aws:logs:us-east-1:569381557655:log-group:ecs:*"
+      },
+    ],
+  })
+}
