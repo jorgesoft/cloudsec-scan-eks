@@ -1,35 +1,5 @@
-provider "aws" {
-  region = "us-west-2" # Change this to your region
+resource "aws_ecs_cluster" "cluster" {
+  name = var.cluster_name
 }
 
-resource "aws_eks_cluster" "cluster" {
-  name     = "my-eks-cluster"
-  role_arn = aws_iam_role.eks_cluster_role.arn
-
-  vpc_config {
-    subnet_ids = var.subnet_ids # Subnets for the EKS cluster
-  }
-
-  # Additional configurations...
-}
-
-resource "aws_iam_role" "eks_cluster_role" {
-  name = "eks_cluster_role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Action = "sts:AssumeRole",
-        Effect = "Allow",
-        Principal = {
-          Service = "eks.amazonaws.com"
-        }
-      },
-    ]
-  })
-
-  # Attach necessary policies for EKS
-}
-
-# You might also need to define Node Groups or Managed Node Groups here
+# Add any additional resources or configurations needed for the ECS cluster.
