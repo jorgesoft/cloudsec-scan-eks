@@ -19,3 +19,12 @@ module "ecs_service" {
 }
 
 # You can also define outputs here if you need to expose any information from the modules
+
+# Module for creating ECS Service and Task Definition
+module "ecs_nmap_service" {
+  source              = "./modules/ecs-nmap"
+  cluster_id          = module.ecs_cluster.cluster_id
+  execution_role_arn  = module.ecs_cluster.execution_role_arn
+  subnets             = var.subnets # Replace with your subnet IDs
+  security_groups     = [module.ecs_cluster.security_group_id] # Replace with your security group ID
+}
