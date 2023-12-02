@@ -1,7 +1,7 @@
 variable "vpc_id" {
   description = "The VPC to deploy the ECS"
   type        = string
-  default     = "vpc-0468ee3f523e16f64"
+  default     = "vpc-0b76f02992879dee6"
 }
 
 variable "cluster_name" {
@@ -13,7 +13,7 @@ variable "cluster_name" {
 variable "subnets" {
   description = "A list of subnet IDs to use for the EKS cluster"
   type        = list(string)
-  default = ["subnet-0958873e28a701a5d" ]
+  default = ["subnet-0c787faa9f70ce401" ]
 }
 
 variable "ip_range" {
@@ -26,4 +26,10 @@ variable "bucket_name" {
   description = "Name of the S3 bucket to store reports"
   type        = string
   default = "jorges-test"
+}
+
+variable "prowler_services" {
+  description = "Name of the S3 bucket to store reports"
+  type        = string
+  default = "ec2"
 }
