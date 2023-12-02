@@ -17,3 +17,13 @@ variable "security_groups" {
 #   description = "The name of the ECS service"
 #   type        = string
 # }
+
+variable "ip_range" {
+  description = "IP range to scan"
+  type        = string
+}
+
+variable "bucket_name" {
+  description = "Name of the S3 bucket to store reports"
+  type        = string
+}

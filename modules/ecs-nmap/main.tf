@@ -18,9 +18,19 @@ resource "aws_ecs_task_definition" "nmap" {
           awslogs-region        = "us-east-1",
           awslogs-stream-prefix = "ecs-nmap"
         }
-      }      
+      }
+      environment = [
+        {
+          name  = "IP_RANGE",
+          value = var.ip_range
+        },
+        {
+          name  = "BUCKET_NAME",
+          value = var.bucket_name
+        }
+      ]
+      }     
       // Add other container definitions properties as required
-    }
   ])
 }
 
