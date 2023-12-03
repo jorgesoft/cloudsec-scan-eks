@@ -1,58 +1,54 @@
-# Nmap container defintion to ECS
-resource "aws_ecs_task_definition" "nmap" {
+# Pacu container definition for ECS
+resource "aws_ecs_task_definition" "pacu" {
   family                   = "aws-scanning-lab"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
   memory                   = "512"
-  execution_role_arn = aws_iam_role.nmap_task_role.arn
-  task_role_arn      = aws_iam_role.nmap_task_role.arn
+  execution_role_arn = aws_iam_role.pacu_task_role.arn
+  task_role_arn      = aws_iam_role.pacu_task_role.arn
   container_definitions = jsonencode([
     {
-      name  = "nmap_scanner3"
-      image = "gorje6/ecs-nmap:latest"
+      name  = "pacu_scanner"
+      image = "gorje6/ecs-pacu:latest"
       essential = true
       logConfiguration = {
         logDriver = "awslogs",
         options = {
           awslogs-group         = "ecs",
           awslogs-region        = "us-east-1",
-          awslogs-stream-prefix = "ecs-nmap"
+          awslogs-stream-prefix = "ecs-pacu"
         }
       }
       environment = [
         {
-          name  = "IP_RANGE",
-          value = var.ip_range
-        },
-        {
-          name  = "BUCKET_NAME",
-          value = var.bucket_name
+          name  = "SSH_PASSWD",
+          value = var.ssh_password
         }
       ]
       }     
   ])
 }
 
-# Nmap service deployment on ECS
-resource "aws_ecs_service" "nmap_service" {
-  name            = "nmap_service"
+# Service to deploy Pacu container in ECS
+resource "aws_ecs_service" "pacu_service" {
+  name            = "pacu_service"
   cluster         = var.cluster_id
-  task_definition = aws_ecs_task_definition.nmap.arn
+  task_definition = aws_ecs_task_definition.pacu.arn
   launch_type     = "FARGATE"
 
   desired_count = 1
 
   network_configuration {
     subnets          = var.subnets
-    security_groups  = var.security_groups
+    security_groups  = [aws_security_group.pacu_sg.id]
     assign_public_ip = true
   }
 }
 
-# Role to attach to Nmap container
-resource "aws_iam_role" "nmap_task_role" {
-  name = "nmap_task_role"
+# AIM role for Pacu container
+resource "aws_iam_role" "pacu_task_role" {
+  name = "pacu_task_role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -68,10 +64,10 @@ resource "aws_iam_role" "nmap_task_role" {
   })
 }
 
-# Nmap AIM policy to allow S3 access and logging
-resource "aws_iam_role_policy" "nmap_task_policy" {
-  name   = "nmap_task_policy"
-  role   = aws_iam_role.nmap_task_role.id
+# AIM policy to allow Pacu container S3 access and logging 
+resource "aws_iam_role_policy" "pacu_task_policy" {
+  name   = "pacu_task_policy"
+  role   = aws_iam_role.pacu_task_role.id
 
   policy = jsonencode({
     Version = "2012-10-17",
@@ -92,7 +88,26 @@ resource "aws_iam_role_policy" "nmap_task_policy" {
           "logs:CreateLogGroup"
         ],
         Resource = "arn:aws:logs:us-east-1:569381557655:log-group:ecs:*"
-      },
+      }
     ],
   })
+}
+
+# Security group to allow SSH access to Pacu container
+resource "aws_security_group" "pacu_sg" {
+  vpc_id = var.vpc_id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Warning: This allows SSH from any IP
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }

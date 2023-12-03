@@ -1,20 +1,20 @@
 variable "subnets" {
-  description = "A list of subnet IDs to use for the Nmap container"
+  description = "A list of subnet IDs to use for the Prowler cluster"
   type        = list(string)
 }
 
 variable "cluster_id" {
-  description = "The ID of the ECS cluster"
+  description = "The ID of the ECS service"
   type        = string
 }
 
 variable "security_groups" {
-  description = "A security groups to use for the Nmap container"
+  description = "A list of security groups to use for the Prowler container"
   type        = list(string)
 }
 
-variable "ip_range" {
-  description = "IP range to scan"
+variable "prowler_services" {
+  description = "List of AWS services to scan with Prowler"
   type        = string
 }
 
