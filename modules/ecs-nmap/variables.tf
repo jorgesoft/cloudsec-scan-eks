@@ -1,22 +1,17 @@
 variable "subnets" {
-  description = "A list of subnet IDs to use for the EKS cluster"
+  description = "A list of subnet IDs to use for the Nmap container"
   type        = list(string)
 }
 
 variable "cluster_id" {
-  description = "The name of the ECS service"
+  description = "The ID of the ECS cluster"
   type        = string
 }
 
 variable "security_groups" {
-  description = "A list of subnet IDs to use for the EKS cluster"
+  description = "A security groups to use for the Nmap container"
   type        = list(string)
 }
-
-# variable "execution_role_arn" {
-#   description = "The name of the ECS service"
-#   type        = string
-# }
 
 variable "ip_range" {
   description = "IP range to scan"

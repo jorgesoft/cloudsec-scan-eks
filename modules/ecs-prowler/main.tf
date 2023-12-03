@@ -1,3 +1,4 @@
+# Prowler container definition
 resource "aws_ecs_task_definition" "prowler" {
   family                   = "aws-scanning-lab"
   network_mode             = "awsvpc"
@@ -9,7 +10,7 @@ resource "aws_ecs_task_definition" "prowler" {
   container_definitions = jsonencode([
     {
       name  = "prowler_scanner3"
-      image = "gorje6/ecs-prowler:latest" # Replace with your Docker image
+      image = "gorje6/ecs-prowler:latest"
       essential = true
       logConfiguration = {
         logDriver = "awslogs",
@@ -30,10 +31,10 @@ resource "aws_ecs_task_definition" "prowler" {
         }
       ]
       }     
-      // Add other container definitions properties as required
   ])
 }
 
+# Prowler service deployment
 resource "aws_ecs_service" "prowler_service" {
   name            = "prowler_service"
   cluster         = var.cluster_id
@@ -47,13 +48,9 @@ resource "aws_ecs_service" "prowler_service" {
     security_groups  = var.security_groups
     assign_public_ip = true
   }
-
-  # Depending on your needs, you might want to add load balancer configurations or service discovery settings here.
 }
 
-# Here, you can add more resources or configurations related to the ECS service if needed.
-# For example, auto-scaling configurations.
-
+# AIM role to Prowler container
 resource "aws_iam_role" "prowler_task_role" {
   name = "prowler_task_role"
 
@@ -71,6 +68,8 @@ resource "aws_iam_role" "prowler_task_role" {
   })
 }
 
+# Policy to give all the access needed for Prowler
+# Documentation: https://github.com/prowler-cloud/prowler/tree/2.12.1#requirements-and-installation
 resource "aws_iam_role_policy" "prowler_task_policy" {
   name   = "prowler_task_policy"
   role   = aws_iam_role.prowler_task_role.id
@@ -148,6 +147,8 @@ resource "aws_iam_role_policy" "prowler_task_policy" {
   })
 }
 
+# Attached required policies to Prowler role
+# https://github.com/prowler-cloud/prowler/tree/2.12.1#requirements-and-installation
 resource "aws_iam_role_policy_attachment" "security_audit" {
   role       = aws_iam_role.prowler_task_role.name
   policy_arn = "arn:aws:iam::aws:policy/SecurityAudit"

@@ -1,10 +1,10 @@
 variable "subnets" {
-  description = "A list of subnet IDs to use for the EKS cluster"
+  description = "A list of subnet IDs to use for the Pacu container"
   type        = list(string)
 }
 
 variable "cluster_id" {
-  description = "The name of the ECS service"
+  description = "The ID of the ECS cluster"
   type        = string
 }
 

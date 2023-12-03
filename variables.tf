@@ -1,3 +1,5 @@
+# Use this file as a configuration file
+
 variable "vpc_id" {
   description = "The VPC to deploy the ECS"
   type        = string
@@ -11,7 +13,7 @@ variable "cluster_name" {
 }
 
 variable "subnets" {
-  description = "A list of subnet IDs to use for the EKS cluster"
+  description = "A list of subnet IDs to use for the EKS cluster (only public supported by now)"
   type        = list(string)
   default = ["subnet-09f2197e07c30f6e7" ]
 }
@@ -29,13 +31,13 @@ variable "bucket_name" {
 }
 
 variable "prowler_services" {
-  description = "Name of the S3 bucket to store reports"
+  description = "List of AWS services to scan with Prowler"
   type        = string
-  default = "ec2"
+  default = "ec2 s3 ecs"
 }
 
 variable "ssh_password" {
-  description = "Secure SSH password"
+  description = "Secure SSH password to connect to Pacu"
   type        = string
   sensitive   = true
 }

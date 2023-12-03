@@ -1,25 +1,20 @@
 variable "subnets" {
-  description = "A list of subnet IDs to use for the EKS cluster"
+  description = "A list of subnet IDs to use for the Prowler cluster"
   type        = list(string)
 }
 
 variable "cluster_id" {
-  description = "The name of the ECS service"
+  description = "The ID of the ECS service"
   type        = string
 }
 
 variable "security_groups" {
-  description = "A list of subnet IDs to use for the EKS cluster"
+  description = "A list of security groups to use for the Prowler container"
   type        = list(string)
 }
 
-# variable "execution_role_arn" {
-#   description = "The name of the ECS service"
-#   type        = string
-# }
-
 variable "prowler_services" {
-  description = "IP range to scan"
+  description = "List of AWS services to scan with Prowler"
   type        = string
 }
 

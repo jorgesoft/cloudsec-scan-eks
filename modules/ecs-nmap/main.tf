@@ -1,3 +1,4 @@
+# Nmap container defintion to ECS
 resource "aws_ecs_task_definition" "nmap" {
   family                   = "aws-scanning-lab"
   network_mode             = "awsvpc"
@@ -9,7 +10,7 @@ resource "aws_ecs_task_definition" "nmap" {
   container_definitions = jsonencode([
     {
       name  = "nmap_scanner3"
-      image = "gorje6/ecs-nmap:latest" # Replace with your Docker image
+      image = "gorje6/ecs-nmap:latest"
       essential = true
       logConfiguration = {
         logDriver = "awslogs",
@@ -30,10 +31,10 @@ resource "aws_ecs_task_definition" "nmap" {
         }
       ]
       }     
-      // Add other container definitions properties as required
   ])
 }
 
+# Nmap service deployment on ECS
 resource "aws_ecs_service" "nmap_service" {
   name            = "nmap_service"
   cluster         = var.cluster_id
@@ -47,13 +48,9 @@ resource "aws_ecs_service" "nmap_service" {
     security_groups  = var.security_groups
     assign_public_ip = true
   }
-
-  # Depending on your needs, you might want to add load balancer configurations or service discovery settings here.
 }
 
-# Here, you can add more resources or configurations related to the ECS service if needed.
-# For example, auto-scaling configurations.
-
+# Role to attach to Nmap container
 resource "aws_iam_role" "nmap_task_role" {
   name = "nmap_task_role"
 
@@ -71,6 +68,7 @@ resource "aws_iam_role" "nmap_task_role" {
   })
 }
 
+# Nmap AIM policy to allow S3 access and logging
 resource "aws_iam_role_policy" "nmap_task_policy" {
   name   = "nmap_task_policy"
   role   = aws_iam_role.nmap_task_role.id

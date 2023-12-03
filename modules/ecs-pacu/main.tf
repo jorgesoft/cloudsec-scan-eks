@@ -1,3 +1,4 @@
+# Pacu container definition for ECS
 resource "aws_ecs_task_definition" "pacu" {
   family                   = "aws-scanning-lab"
   network_mode             = "awsvpc"
@@ -9,7 +10,7 @@ resource "aws_ecs_task_definition" "pacu" {
   container_definitions = jsonencode([
     {
       name  = "pacu_scanner"
-      image = "gorje6/ecs-pacu:latest" # Replace with your Docker image
+      image = "gorje6/ecs-pacu:latest"
       essential = true
       logConfiguration = {
         logDriver = "awslogs",
@@ -26,10 +27,10 @@ resource "aws_ecs_task_definition" "pacu" {
         }
       ]
       }     
-      // Add other container definitions properties as required
   ])
 }
 
+# Service to deploy Pacu container in ECS
 resource "aws_ecs_service" "pacu_service" {
   name            = "pacu_service"
   cluster         = var.cluster_id
@@ -43,13 +44,9 @@ resource "aws_ecs_service" "pacu_service" {
     security_groups  = [aws_security_group.pacu_sg.id]
     assign_public_ip = true
   }
-
-  # Depending on your needs, you might want to add load balancer configurations or service discovery settings here.
 }
 
-# Here, you can add more resources or configurations related to the ECS service if needed.
-# For example, auto-scaling configurations.
-
+# AIM role for Pacu container
 resource "aws_iam_role" "pacu_task_role" {
   name = "pacu_task_role"
 
@@ -67,6 +64,7 @@ resource "aws_iam_role" "pacu_task_role" {
   })
 }
 
+# AIM policy to allow Pacu container S3 access and logging 
 resource "aws_iam_role_policy" "pacu_task_policy" {
   name   = "pacu_task_policy"
   role   = aws_iam_role.pacu_task_role.id
@@ -95,6 +93,7 @@ resource "aws_iam_role_policy" "pacu_task_policy" {
   })
 }
 
+# Security group to allow SSH access to Pacu container
 resource "aws_security_group" "pacu_sg" {
   vpc_id = var.vpc_id
 
