@@ -12,6 +12,12 @@ variable "cluster_name" {
   default = "my-ecs-cluster"
 }
 
+variable "log_group_name" {
+  description = "The name of log group used by containers"
+  type        = string
+  default = "scan-ecs"
+}
+
 variable "subnets" {
   description = "A list of subnet IDs to use for the EKS cluster (only public supported by now)"
   type        = list(string)

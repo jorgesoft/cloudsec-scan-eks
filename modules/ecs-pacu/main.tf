@@ -15,7 +15,7 @@ resource "aws_ecs_task_definition" "pacu" {
       logConfiguration = {
         logDriver = "awslogs",
         options = {
-          awslogs-group         = "ecs",
+          awslogs-group         = var.log_group_name,
           awslogs-region        = "us-east-1",
           awslogs-stream-prefix = "ecs-pacu"
         }
@@ -87,7 +87,7 @@ resource "aws_iam_role_policy" "pacu_task_policy" {
           "logs:PutLogEvents",
           "logs:CreateLogGroup"
         ],
-        Resource = "arn:aws:logs:us-east-1:569381557655:log-group:ecs:*"
+        Resource = "${var.log_group_arn}:*"
       }
     ],
   })
