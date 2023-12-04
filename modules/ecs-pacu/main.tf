@@ -78,7 +78,7 @@ resource "aws_iam_role_policy" "pacu_task_policy" {
           "s3:PutObject",
           "s3:PutObjectAcl"
         ],
-        Resource = "arn:aws:s3:::jorges-test/*"
+        Resource = "arn:aws:s3:::${var.bucket_name}/*"
       },
       {
         Effect = "Allow",
