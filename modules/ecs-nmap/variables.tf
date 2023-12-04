@@ -8,11 +8,6 @@ variable "cluster_id" {
   type        = string
 }
 
-variable "security_groups" {
-  description = "A security groups to use for the Nmap container"
-  type        = list(string)
-}
-
 variable "ip_range" {
   description = "IP range to scan"
   type        = string

@@ -1,6 +1,6 @@
 # Prowler container definition
 resource "aws_ecs_task_definition" "prowler" {
-  family                   = "aws-scanning-lab"
+  family                   = "prowler-service-tasks"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
@@ -9,7 +9,7 @@ resource "aws_ecs_task_definition" "prowler" {
   task_role_arn      = aws_iam_role.prowler_task_role.arn
   container_definitions = jsonencode([
     {
-      name  = "prowler_scanner3"
+      name  = "prowler_scanner"
       image = "gorje6/ecs-prowler:latest"
       essential = true
       logConfiguration = {
@@ -45,7 +45,7 @@ resource "aws_ecs_service" "prowler_service" {
 
   network_configuration {
     subnets          = var.subnets
-    security_groups  = var.security_groups
+    #security_groups  = var.security_groups
     assign_public_ip = true
   }
 }

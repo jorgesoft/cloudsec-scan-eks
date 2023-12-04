@@ -1,6 +1,6 @@
 # Pacu container definition for ECS
 resource "aws_ecs_task_definition" "pacu" {
-  family                   = "aws-scanning-lab"
+  family                   = "pacu-service-tasks"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = "256"

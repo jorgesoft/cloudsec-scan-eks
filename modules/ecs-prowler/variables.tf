@@ -8,11 +8,6 @@ variable "cluster_id" {
   type        = string
 }
 
-variable "security_groups" {
-  description = "A list of security groups to use for the Prowler container"
-  type        = list(string)
-}
-
 variable "prowler_services" {
   description = "List of AWS services to scan with Prowler"
   type        = string

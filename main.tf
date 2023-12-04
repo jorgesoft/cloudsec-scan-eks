@@ -13,8 +13,7 @@ module "ecs_cluster" {
 module "ecs_nmap_service" {
   source              = "./modules/ecs-nmap"
   cluster_id          = module.ecs_cluster.cluster_id
-  subnets             = var.subnets 
-  security_groups     = [module.ecs_cluster.security_group_id] 
+  subnets             = var.subnets
   ip_range    = var.ip_range
   bucket_name = var.bucket_name
 }
@@ -23,8 +22,7 @@ module "ecs_nmap_service" {
 module "ecs_prowler_service" {
   source              = "./modules/ecs-prowler"
   cluster_id          = module.ecs_cluster.cluster_id
-  subnets             = var.subnets 
-  security_groups     = [module.ecs_cluster.security_group_id] 
+  subnets             = var.subnets
   prowler_services    = var.prowler_services
   bucket_name = var.bucket_name
 }

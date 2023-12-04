@@ -40,5 +40,5 @@ Repo for the services: [cloudsec-scan-conts](https://github.com/jorgesoft/clouds
 
 1. ~~Remove hardcoding of S3 bucket~~
 2. Create log group in Terraform and pass it to container definitions
-3. Remove unused security group
+3. ~~Remove unused security group~~
 4. ~~Add GitHub actions container building~~

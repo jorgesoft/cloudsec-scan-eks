@@ -33,7 +33,7 @@ variable "bucket_name" {
 variable "prowler_services" {
   description = "List of AWS services to scan with Prowler"
   type        = string
-  default = "ec2 s3 ecs"
+  default = "ec2 s3"
 }
 
 variable "ssh_password" {

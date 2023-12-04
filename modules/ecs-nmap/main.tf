@@ -1,6 +1,6 @@
 # Nmap container defintion to ECS
 resource "aws_ecs_task_definition" "nmap" {
-  family                   = "aws-scanning-lab"
+  family                   = "nmap-service-tasks"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
@@ -9,7 +9,7 @@ resource "aws_ecs_task_definition" "nmap" {
   task_role_arn      = aws_iam_role.nmap_task_role.arn
   container_definitions = jsonencode([
     {
-      name  = "nmap_scanner3"
+      name  = "nmap_scanner"
       image = "gorje6/ecs-nmap:latest"
       essential = true
       logConfiguration = {
@@ -45,7 +45,7 @@ resource "aws_ecs_service" "nmap_service" {
 
   network_configuration {
     subnets          = var.subnets
-    security_groups  = var.security_groups
+    #security_groups  = var.security_groups
     assign_public_ip = true
   }
 }
