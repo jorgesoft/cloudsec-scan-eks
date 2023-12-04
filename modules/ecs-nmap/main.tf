@@ -1,6 +1,6 @@
 # Nmap container defintion to ECS
 resource "aws_ecs_task_definition" "nmap" {
-  family                   = "aws-scanning-lab"
+  family                   = "nmap-service-tasks"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
@@ -9,13 +9,13 @@ resource "aws_ecs_task_definition" "nmap" {
   task_role_arn      = aws_iam_role.nmap_task_role.arn
   container_definitions = jsonencode([
     {
-      name  = "nmap_scanner3"
+      name  = "nmap_scanner"
       image = "gorje6/ecs-nmap:latest"
       essential = true
       logConfiguration = {
         logDriver = "awslogs",
         options = {
-          awslogs-group         = "ecs",
+          awslogs-group         = var.log_group_name,
           awslogs-region        = "us-east-1",
           awslogs-stream-prefix = "ecs-nmap"
         }
@@ -45,7 +45,7 @@ resource "aws_ecs_service" "nmap_service" {
 
   network_configuration {
     subnets          = var.subnets
-    security_groups  = var.security_groups
+    #security_groups  = var.security_groups
     assign_public_ip = true
   }
 }
@@ -82,7 +82,7 @@ resource "aws_iam_role_policy" "nmap_task_policy" {
           "s3:PutObject",
           "s3:PutObjectAcl"
         ],
-        Resource = "arn:aws:s3:::jorges-test/*"
+        Resource = "arn:aws:s3:::${var.bucket_name}/*"
       },
       {
         Effect = "Allow",
@@ -91,7 +91,7 @@ resource "aws_iam_role_policy" "nmap_task_policy" {
           "logs:PutLogEvents",
           "logs:CreateLogGroup"
         ],
-        Resource = "arn:aws:logs:us-east-1:569381557655:log-group:ecs:*"
+        Resource = "${var.log_group_arn}:*"
       },
     ],
   })

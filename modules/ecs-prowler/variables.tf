@@ -8,11 +8,6 @@ variable "cluster_id" {
   type        = string
 }
 
-variable "security_groups" {
-  description = "A list of security groups to use for the Prowler container"
-  type        = list(string)
-}
-
 variable "prowler_services" {
   description = "List of AWS services to scan with Prowler"
   type        = string
@@ -20,5 +15,15 @@ variable "prowler_services" {
 
 variable "bucket_name" {
   description = "Name of the S3 bucket to store reports"
+  type        = string
+}
+
+variable "log_group_arn" {
+  description = "The ARN of the CloudWatch Log Group"
+  type        = string
+}
+
+variable "log_group_name" {
+  description = "The name of the CloudWatch Log Group"
   type        = string
 }

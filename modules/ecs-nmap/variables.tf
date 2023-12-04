@@ -8,11 +8,6 @@ variable "cluster_id" {
   type        = string
 }
 
-variable "security_groups" {
-  description = "A security groups to use for the Nmap container"
-  type        = list(string)
-}
-
 variable "ip_range" {
   description = "IP range to scan"
   type        = string
@@ -20,5 +15,15 @@ variable "ip_range" {
 
 variable "bucket_name" {
   description = "Name of the S3 bucket to store reports"
+  type        = string
+}
+
+variable "log_group_arn" {
+  description = "The ARN of the CloudWatch Log Group"
+  type        = string
+}
+
+variable "log_group_name" {
+  description = "The name of the CloudWatch Log Group"
   type        = string
 }
