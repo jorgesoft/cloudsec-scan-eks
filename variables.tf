@@ -3,7 +3,7 @@
 variable "vpc_id" {
   description = "The VPC to deploy the ECS"
   type        = string
-  default     = "vpc-03587575f31ddc5ec"
+  default     = "vpc-0b3af7ee16aa7418f"
 }
 
 variable "cluster_name" {
@@ -19,9 +19,9 @@ variable "log_group_name" {
 }
 
 variable "subnets" {
-  description = "A list of subnet IDs to use for the EKS cluster (only public supported by now)"
+  description = "A list of subnet IDs to use for the ECS cluster (only public supported by now)"
   type        = list(string)
-  default = ["subnet-0c601511e0db09891" ]
+  default = ["subnet-0debd0443dee835b4" ]
 }
 
 variable "ip_range" {

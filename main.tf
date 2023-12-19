@@ -1,3 +1,4 @@
+# all resources need to be passed as a module here in the root main.tf
 provider "aws" {
   region = "us-east-1"  # Specify your AWS region
 }
@@ -11,7 +12,7 @@ module "ecs_cluster" {
 
 # Module for creating log group
 module "cloudwatch_log_group" {
-  source         = "./modules/log-group"  # Update this path to your module's location
+  source         = "./modules/log-group" 
   log_group_name = var.log_group_name
 }
 

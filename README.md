@@ -1,4 +1,4 @@
-# AWS security assessment with Nmap, Prowler, and Pacu
+# Modular AWS security assessment with Nmap, Prowler, and Pacu
 
 Terraform configuration to deploy ECS cluster and run Nmap, Prowler and Pacu on AWS.
 The output of these services can provide valuable insight on the current security posture for an AWS account, and the future hardening and remediations. 
@@ -25,8 +25,8 @@ Repo for the services: [cloudsec-scan-conts](https://github.com/jorgesoft/clouds
 ### Instructions:
 
 1. Write the VPC ID, subnets to scan, S3 bucket and other options in the `variables.tf` file
-2. Start Terraform with `terrafor init`
-3. Deploy configuration with `terrafor apply`
+2. Start Terraform with `terraform init`
+3. Deploy configuration with `terraform apply`
 4. Write a password to connect to the Pacu container
 5. Wait for the results to appear in the selected S3 bucket
 
@@ -35,10 +35,3 @@ Repo for the services: [cloudsec-scan-conts](https://github.com/jorgesoft/clouds
 1. Look for the logs for the Pacu container
 2. SSH to the IP using `ssh root@[ip]`
 3. Use the password used after running terraform apply
-
-## TODO
-
-1. ~~Remove hardcoding of S3 bucket~~
-2. Create log group in Terraform and pass it to container definitions
-3. ~~Remove unused security group~~
-4. ~~Add GitHub actions container building~~
